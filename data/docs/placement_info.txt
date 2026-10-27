@@ -1,0 +1,3 @@
+Placement Eligibility: Students need a minimum of 70 marks and no active backlogs to sit for campus placements. Computer Science students also need to complete one internship before the final year.
+
+Course Information: The Computer Science course covers data structures, machine learning, cloud computing and generative AI. The Electronics course covers circuits, embedded systems and VLSI. The Mechanical course covers thermodynamics, design and manufacturing.
