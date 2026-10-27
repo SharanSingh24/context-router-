@@ -48,3 +48,4 @@ If it fails, it silently falls back to the mock LLM and prints the reason in the
 | ElastiCache Redis | cache.py dict | Redis |
 | OpenSearch / RDS | docs keyword search / SQLite | vector search / RDS |
 | CloudWatch | `latency_ms_per_source` in response | CloudWatch metrics |
+# context-router-
