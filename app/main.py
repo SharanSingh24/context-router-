@@ -1,8 +1,9 @@
-from fastapi import FastAPI
+from fastapi import BackgroundTasks, FastAPI
 from pydantic import BaseModel
 
 from app.cache import cache_clear, cache_size
 from app.graph import graph
+from app.metrics import record_request
 from app.sources import clear_memory, init_db
 
 app = FastAPI(title="Multi-Source Context Merge Router")
@@ -19,8 +20,9 @@ def home():
 
 
 @app.post("/ask")
-def ask(req: AskRequest):
+def ask(req: AskRequest, background: BackgroundTasks):
     result = graph.invoke({"question": req.question})
+    background.add_task(record_request, result)  # sends metrics after the response is returned
     return {
         "question": req.question,
         "answer": result.get("answer"),
@@ -28,6 +30,7 @@ def ask(req: AskRequest):
         "cache_hit": result.get("cache_hit", False),
         "llm_used": result.get("llm_used"),
         "latency_ms_per_source": result.get("timings_ms"),
+
         "merge_stats": result.get("merge_stats"),
         "merged_context": result.get("merged_context"),
     }
