@@ -3,6 +3,7 @@
 Every retriever takes a query string and returns a list of dicts:
     {"text": "...", "source": "docs" | "db" | "memory"}
 """
+import os
 import re
 import sqlite3
 from pathlib import Path
@@ -50,6 +51,10 @@ def init_db() -> None:
 
 def get_db(query: str) -> list[dict]:
     """Structured-data source. Simple keyword -> SQL mapping (safe, parameterised)."""
+    if os.getenv("DB_BACKEND", "sqlite").lower() == "dynamodb":
+        from app.dynamo_source import get_db_dynamodb
+
+        return get_db_dynamodb(query)
     init_db()
     q = query.lower()
     tokens = tokenize(query)
